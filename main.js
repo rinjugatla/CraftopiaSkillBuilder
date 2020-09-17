@@ -95,48 +95,6 @@ $(window).on('load', function () {
 
         return false;
     });
-    
-    // $('.treeA_tier1_img').on('click contextmenu', function (e) {
-    //     // tierのカウント
-    //     var count = $('#treeA_tier1_count');
-    //     // スキルのカウント
-    //     var skill_count = $(`#${$(this).attr('id')}_count`);
-    //     var skill_limit = $(`#${$(this).attr('id')}_limit`);
-        
-    //     if(e.which == 1)
-    //     {
-    //         // 左クリック
-    //         // スキルレベルが最大の場合は変更しない
-    //         if(skill_count.text() == skill_limit.text())
-    //             return false;
-    //         skill_count.text(Number(skill_count.text())+1);
-    //         count.text(Number(count.text())+1);
-    //     }            
-    //     else if(e.which == 3 && Number(skill_count.text()) > 0)
-    //     {
-    //         // 右クリック
-    //         skill_count.text(Number(skill_count.text())-1);
-    //         count.text(Number(count.text())-1);
-    //     }
-
-    //     return false;
-    // });
-
-    // $('.treeA_tier2_img').on('click contextmenu', function (e) {
-    //     var count_prev = $('#treeA_tier1_count');
-    //     var limit_prev = $('#treeA_tier1_limit');
-    //     if(count_prev.text() < limit_prev.text())
-    //         return false;
-
-    //     var count = $('#treeA_tier2_count');
-    //     if(e.which == 1)
-    //         count.text(Number(count.text())+1);
-    //     else if(e.which == 3 && count.text() > 0)
-    //         count.text(Number(count.text())-1);
-
-    //     // return false;
-    // });
-
 
     // $('img#tier1_a').on({
     //     //ひとつ目のイベントハンドラ
