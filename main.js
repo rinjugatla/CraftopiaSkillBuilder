@@ -2,9 +2,10 @@ var json;
 
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
-function ABCConvertToInt(a) {
+function ABCConvertToInt(c) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    return alphabet.indexOf(a) + 1 ;
+    var upper = c.toUpperCase();
+    return alphabet.indexOf(upper) + 1 ;
 }
 
 // タグ作成
