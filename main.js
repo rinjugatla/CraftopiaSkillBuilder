@@ -1,5 +1,7 @@
 var json;
 
+const max_skill_point = 50;
+
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
 function ABCConvertToInt(c) {
@@ -62,7 +64,10 @@ $(function () {
 });
 
 $(window).on('load', function () {
+    // 値設定
+    $('#point_left').text(max_skill_point);
 
+    // イベント追加
     $(`.skill_img`).on({
         'click contextmenu': function (e) {
             // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
@@ -88,18 +93,24 @@ $(window).on('load', function () {
             var skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
             if(e.which == 1)
             {
+                // 残りスキルポイントがない場合は処理しない
+                if($('#point_left').text() == 0)
+                    return;
+
                 // 左クリック
                 // スキルレベルが最大の場合は変更しない
                 if(skill_count.text() == skill_limit.text())
                     return false;
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
+                $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
             }            
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
                 // 右クリック
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
+                $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
             }
     
             return false;
