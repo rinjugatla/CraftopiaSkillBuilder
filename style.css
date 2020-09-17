@@ -1,0 +1,35 @@
+#skilltree {
+    background-color: lightblue;
+}
+#detail {
+    background-color: lightgreen;
+}
+
+@media (min-width: 600px) {
+    #parent {
+        display: flex;
+    }
+    #skilltree {
+        flex-grow: 1;
+    }
+    #detail {
+        flex-grow: 1;
+    }
+}
+
+.tier {
+ font-size: 20px;
+}
+.table{
+    text-align: -webkit-center;
+    text-align: -moz-center;
+}
+.name{
+    text-align: center;
+}
+.icon{
+    align-content: center;
+}
+.level{
+    text-align: center;
+}
