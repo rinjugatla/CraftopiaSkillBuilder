@@ -33,7 +33,7 @@ $(function () {
                     // 名前追加
                     table_tr_name.append($('<td>').text(`${skill.name}`));
                     // アイコン追加
-                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `${tree_tier_header}_img`, 'src': `./img/${tree}/${skill.key}.png` })))
+                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/${tree}/${skill.key}.png` })))
                     // 取得状況
                     table_tr_level_td = $('<td>').append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_count` }).text('0'));
                     table_tr_level_td.append($('<span>').text(' / '));
@@ -54,57 +54,47 @@ $(function () {
 
 $(window).on('load', function () {
 
-    var tree_length = json.length;
-    for(var i = 0; i < tree_length; i++)
-    {
-        var tree = json[i].key;
-        var tiers_length = json[i]['data']['tiers'].length;
-        for(var j = 0; j < tiers_length; j++)
-        {
-            var tier = j + 1;
-            var tree_tier_header = `tree${tree}_tier${tier}`;
-            $(`.${tree_tier_header}_img`).on('click contextmenu', function (e) {
-                var this_tier = $(this).attr('class').match(/[\d]+/); // 要素のtier取得
-                var this_tree_tier_header = $(this).attr('class').replace('_img', '');
-                var this_tree_tier_skill_header = $(this).attr('id');
-                
-                if(this_tier > 1)
-                {
-                    // tier1以降の場合は前のtierで条件をクリアしているか検証
-                    var tree_tier_header_prev = `tree${tree}_tier${this_tier-1}`;
-                    var count_prev = $(`#${tree_tier_header_prev}_count`);
-                    var limit_prev = $(`#${tree_tier_header_prev}_limit`);
-                    if(count_prev.text() < limit_prev.text())
-                        return false;
-                }
-
-                // tierのカウント
-                var count = $(`#${this_tree_tier_header}_count`);
-                // スキルのカウント
-                var skill_count = $(`#${this_tree_tier_skill_header}_count`);
-                var skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
-                if(e.which == 1)
-                {
-                    // 左クリック
-                    // スキルレベルが最大の場合は変更しない
-                    if(skill_count.text() == skill_limit.text())
-                        return false;
-                    skill_count.text(Number(skill_count.text())+1);
-                    count.text(Number(count.text())+1);
-                }            
-                else if(e.which == 3 && Number(skill_count.text()) > 0)
-                {
-                    // 右クリック
-                    skill_count.text(Number(skill_count.text())-1);
-                    count.text(Number(count.text())-1);
-                    // 
-
-                }
+    $(`.skill_img`).on('click contextmenu', function (e) {
+        var this_tree = $(this).attr('id').match(/[A-Z]/); // ツリー
+        var this_tier = $(this).attr('id').match(/[\d]+/); // tier
+        var this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
+        var this_tree_tier_skill_header = $(this).attr('id');
         
+        if(this_tier > 1)
+        {
+            // tier1以降の場合は前のtierで条件をクリアしているか検証
+            var tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
+            var count_prev = $(`#${tree_tier_header_prev}_count`);
+            var limit_prev = $(`#${tree_tier_header_prev}_limit`);
+            if(count_prev.text() < limit_prev.text())
                 return false;
-            });
         }
-    }
+
+        // tierのカウント
+        var count = $(`#${this_tree_tier_header}_count`);
+        // スキルのカウント
+        var skill_count = $(`#${this_tree_tier_skill_header}_count`);
+        var skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
+        if(e.which == 1)
+        {
+            // 左クリック
+            // スキルレベルが最大の場合は変更しない
+            if(skill_count.text() == skill_limit.text())
+                return false;
+            skill_count.text(Number(skill_count.text())+1);
+            count.text(Number(count.text())+1);
+        }            
+        else if(e.which == 3 && Number(skill_count.text()) > 0)
+        {
+            // 右クリック
+            skill_count.text(Number(skill_count.text())-1);
+            count.text(Number(count.text())-1);
+            // 
+
+        }
+
+        return false;
+    });
     
     // $('.treeA_tier1_img').on('click contextmenu', function (e) {
     //     // tierのカウント
