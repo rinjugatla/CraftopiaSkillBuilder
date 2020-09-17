@@ -5,7 +5,7 @@ var json;
 function ABCConvertToInt(c) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var upper = c.toUpperCase();
-    return alphabet.indexOf(upper) + 1 ;
+    return alphabet.indexOf(upper);
 }
 
 // タグ作成
@@ -65,8 +65,9 @@ $(window).on('load', function () {
 
     $(`.skill_img`).on({
         'click contextmenu': function (e) {
-            var this_tree = $(this).attr('id').match(/[A-Z]/); // ツリー
-            var this_tier = $(this).attr('id').match(/[\d]+/); // tier
+            // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
+            var this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
+            var this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
             var this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
             var this_tree_tier_skill_header = $(this).attr('id');
             
@@ -99,36 +100,24 @@ $(window).on('load', function () {
                 // 右クリック
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
-                // 
-    
             }
     
             return false;
         },
         'mouseenter': function () {
-            var this_tree = $(this).attr('id').match(/[A-Z]/); // ツリー
-            var this_tier = $(this).attr('id').match(/[\d]+/); // tier
-            var this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
+            // アイコンにマウスオーバした際に説明文を表示
+            var this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
+            var this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
+            var this_skill_num = ABCConvertToInt($(this).attr('id').match(/([a-z])$/)[0]);
+            var description = json[this_tree_num]['data']['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
+            $('#description').text(description);
         },
         //ふたつ目のイベントハンドラ
         'mouseleave': function () {
-            var this_tree = $(this).attr('id').match(/[A-Z]/); // ツリー
-            var this_tier = $(this).attr('id').match(/[\d]+/); // tier
-            var this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
+            // マウスオーバ解除で説明文を初期化
+            $('#description').text('');
         }
     });
-
-    // $('img#tier1_a').on({
-    //     //ひとつ目のイベントハンドラ
-    //     'mouseenter': function () {
-    //         alert("マウスオーバーされました");
-    //     },
-    //     //ふたつ目のイベントハンドラ
-    //     'mouseleave': function () {
-    //         alert("マウスアウトされました");
-    //     }
-    // });
-
 });
 
 
