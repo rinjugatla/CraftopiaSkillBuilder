@@ -2,7 +2,7 @@ var json;
 
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
-function convertToInt(a) {
+function ABCConvertToInt(a) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     return alphabet.indexOf(a) + 1 ;
 }
@@ -108,7 +108,6 @@ $(window).on('load', function () {
             var this_tree = $(this).attr('id').match(/[A-Z]/); // ツリー
             var this_tier = $(this).attr('id').match(/[\d]+/); // tier
             var this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
-
         },
         //ふたつ目のイベントハンドラ
         'mouseleave': function () {
