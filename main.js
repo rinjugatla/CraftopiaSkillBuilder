@@ -16,7 +16,7 @@ function ABCConvertToInt(c) {
 }
 
 // スキル割り当て状況の文字列を作成
-function CreateSkillAssigmentString(){
+function ExportSkillAssigmentString(){
     // 書式 Aaa1Aac2Baa6
     let result = '';
     for(let tree_key in skill_assigment){
@@ -161,7 +161,7 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
-                CreateSkillAssigmentString();
+                ExportSkillAssigmentString();
             }            
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
@@ -170,7 +170,7 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
-                CreateSkillAssigmentString();
+                ExportSkillAssigmentString();
             }
     
             return false;
