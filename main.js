@@ -155,15 +155,15 @@ $(window).on('load', function () {
     });
 
     // Tierタイトルの色
-    $(`[id=]`).on({
+    $(`[id$=count_header]`).on({
         'DOMSubtreeModified propertychange': function () {
-            if($(this).text() == '0')
-                $(this).attr({'class': 'no_point'});
+            let limit_header = $(`#${$(this).attr('id').replace(header_count, header_limit)}`);
+            if(Number($(this).text()) >= Number(limit_header.text()))
+                $(this).attr({'class': 'allow_next_tier'});
             else
                 $(this).attr({'class': ''});
         }
     });
-
 });
 
 
