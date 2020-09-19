@@ -1,4 +1,5 @@
 let json;
+let skill_assigment = {}; // スキル割り当て状況
 
 const max_skill_point = 50;
 const skill_column_count = 5; // 横に並べるスキルの数
@@ -22,6 +23,8 @@ $(function () {
         for (let i = 0; i < tree_length; i++) {
             let tree = data[i].key;
             let tree_name = data[i].name;
+            // スキル割り当て状況にスキルツリーを追加
+            skill_assigment[tree] = {};
             // スキルツリータブ
             let skill_tab = $('<li>').append($('<a>').attr({'href': `#${skilltree_id_header}${tree}`}).text(tree_name));
             // スキルツリー内容
@@ -54,6 +57,10 @@ $(function () {
                 for (let k = 0; k < skills_length; k++) {
                     // Tier内スキル情報
                     let skill = data[i]['data']['tiers'][j]['skills'][k];
+
+                    // スキルツリー割り当て状況にスキルを追加
+                    skill_assigment[tree][skill.key] = 0;
+                    
                     // 名前追加
                     table_tr_name.append($('<td>').text(`${skill.name}`));
                     // アイコン追加
