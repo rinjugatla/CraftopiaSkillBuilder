@@ -15,6 +15,18 @@ function ABCConvertToInt(c) {
     return alphabet.indexOf(upper);
 }
 
+// スキル割り当て状況の文字列を作成
+function CreateSkillAssigmentString(){
+    // 書式 Aaa1Aac2Baa6
+    let result = '';
+    for(let tree_key in skill_assigment){
+        for(let skill_key in skill_assigment[tree_key]){
+            if(skill_assigment[tree_key][skill_key] != 0)
+                result += (tree_key+skill_key+skill_assigment[tree_key][skill_key]);
+        }
+    }
+}
+
 // タグ作成
 $(function () {
     $.getJSON('skilltree.json', function (data) {
@@ -149,6 +161,7 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
+                CreateSkillAssigmentString();
             }            
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
@@ -157,6 +170,7 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
+                CreateSkillAssigmentString();
             }
     
             return false;
