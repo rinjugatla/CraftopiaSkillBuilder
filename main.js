@@ -1,6 +1,7 @@
 var json;
 
 const max_skill_point = 50;
+const skill_column_count = 5; // 横に並べるスキルの数
 
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
@@ -50,6 +51,18 @@ $(function () {
                     table_tr_level_td.append($('<span>').text(' / '));
                     table_tr_level_td.append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_limit` }).text(`${skill.max}`));
                     table_tr_level.append(table_tr_level_td);
+
+                    if(k != 0 && (k % (skill_column_count - 1) == 0))
+                    {
+                        // スキルアイコン等を1行分追加
+                        table.append(table_tr_name);
+                        table.append(table_tr_icon);
+                        table.append(table_tr_level);
+                        // 次行分を初期化
+                        table_tr_name = ($('<tr>').attr({ 'class': 'name' }));
+                        table_tr_icon = ($('<tr>').attr({ 'class': 'icon' }));
+                        table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
+                    }
                 }
 
                 table.append(table_tr_name);
