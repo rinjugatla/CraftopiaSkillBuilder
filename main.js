@@ -1,4 +1,4 @@
-var json;
+let json;
 
 const max_skill_point = 50;
 const skill_column_count = 5; // 横に並べるスキルの数
@@ -7,7 +7,7 @@ const skill_column_count = 5; // 横に並べるスキルの数
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
 function ABCConvertToInt(c) {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var upper = c.toUpperCase();
+    let upper = c.toUpperCase();
     return alphabet.indexOf(upper);
 }
 
@@ -15,33 +15,33 @@ function ABCConvertToInt(c) {
 $(function () {
     $.getJSON('skilltree.json', function (data) {
         json = data;
-        var div_tree = $('#skilltree');
-        var tree_length = data.length;
+        let div_tree = $('#skilltree');
+        let tree_length = data.length;
 
-        for (var i = 0; i < tree_length; i++) {
-            var tree = data[i].key;
-            var tiers_length = data[i]['data']['tiers'].length;
-            for (var j = 0; j < tiers_length; j++) {
-                var tier = j + 1;
-                var tier_limit = data[i]['data']['tiers'][j]['limit'];
-                var tree_tier_header = `tree${tree}_tier${tier}`;
+        for (let i = 0; i < tree_length; i++) {
+            let tree = data[i].key;
+            let tiers_length = data[i]['data']['tiers'].length;
+            for (let j = 0; j < tiers_length; j++) {
+                let tier = j + 1;
+                let tier_limit = data[i]['data']['tiers'][j]['limit'];
+                let tree_tier_header = `tree${tree}_tier${tier}`;
                 // Tierヘッダ
                 div_tree.append($('<span>').attr({ 'class': 'tree' }).text(`Tier ${tier}: `));
                 div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_count` }).text('0'));
                 div_tree.append($('<span>').attr({ 'class': 'tree' }).text('/'));
                 div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_limit` }).text(tier_limit));
                 // Tier画像等
-                var div_table = ($('<div>').attr({ 'class': 'table' }));
-                var table = ($('<table>'));
-                var table_tr_name = ($('<tr>').attr({ 'class': 'name' }));
-                var table_tr_icon = ($('<tr>').attr({ 'class': 'icon' }));
-                var table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
-                var table_tr_level_td;
+                let div_table = ($('<div>').attr({ 'class': 'table' }));
+                let table = ($('<table>'));
+                let table_tr_name = ($('<tr>').attr({ 'class': 'name' }));
+                let table_tr_icon = ($('<tr>').attr({ 'class': 'icon' }));
+                let table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
+                let table_tr_level_td;
 
-                var skills_length = data[i]['data']['tiers'][j]['skills'].length;
-                for (var k = 0; k < skills_length; k++) {
+                let skills_length = data[i]['data']['tiers'][j]['skills'].length;
+                for (let k = 0; k < skills_length; k++) {
                     // Tier内スキル情報
-                    var skill = data[i]['data']['tiers'][j]['skills'][k];
+                    let skill = data[i]['data']['tiers'][j]['skills'][k];
                     // 名前追加
                     table_tr_name.append($('<td>').text(`${skill.name}`));
                     // アイコン追加
@@ -84,26 +84,26 @@ $(window).on('load', function () {
     $(`.skill_img`).on({
         'click contextmenu': function (e) {
             // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
-            var this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
-            var this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
-            var this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
-            var this_tree_tier_skill_header = $(this).attr('id');
+            let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
+            let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
+            let this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
+            let this_tree_tier_skill_header = $(this).attr('id');
             
             if(this_tier > 1)
             {
                 // tier1以降の場合は前のtierで条件をクリアしているか検証
-                var tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
-                var count_prev = $(`#${tree_tier_header_prev}_count`);
-                var limit_prev = $(`#${tree_tier_header_prev}_limit`);
+                let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
+                let count_prev = $(`#${tree_tier_header_prev}_count`);
+                let limit_prev = $(`#${tree_tier_header_prev}_limit`);
                 if(count_prev.text() < limit_prev.text())
                     return false;
             }
     
             // tierのカウント
-            var count = $(`#${this_tree_tier_header}_count`);
+            let count = $(`#${this_tree_tier_header}_count`);
             // スキルのカウント
-            var skill_count = $(`#${this_tree_tier_skill_header}_count`);
-            var skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
+            let skill_count = $(`#${this_tree_tier_skill_header}_count`);
+            let skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
             if(e.which == 1)
             {
                 // 残りスキルポイントがない場合は処理しない
@@ -130,10 +130,10 @@ $(window).on('load', function () {
         },
         'mouseenter': function () {
             // アイコンにマウスオーバした際に説明文を表示
-            var this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
-            var this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
-            var this_skill_num = ABCConvertToInt($(this).attr('id').match(/([a-z])$/)[0]);
-            var description = json[this_tree_num]['data']['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
+            let this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
+            let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
+            let this_skill_num = ABCConvertToInt($(this).attr('id').match(/([a-z])$/)[0]);
+            let description = json[this_tree_num]['data']['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
             $('#description').text(description);
         },
         //ふたつ目のイベントハンドラ
@@ -141,6 +141,8 @@ $(window).on('load', function () {
             // マウスオーバ解除で説明文を初期化
             $('#description').text('');
         }
+
+        
     });
 });
 
