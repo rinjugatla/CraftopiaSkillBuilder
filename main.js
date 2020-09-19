@@ -25,6 +25,17 @@ function ExportSkillAssigmentString(){
                 result += (tree_key+skill_key+skill_assigment[tree_key][skill_key]);
         }
     }
+    return result;
+}
+// スキル割り当て文字列からスキル割り当て状況を復元
+function ImportSkillAssigmentString(assigment){
+    let assigment_split = assigment.match(/.{4}/g);
+    for(let i = 0; i < assigment_split.length; i++){
+        let tree_key = assigment_split[i].charAt(0);
+        let skill_key = assigment_split[i].substring(1,3);
+        let level = assigment_split[i].charAt(3);
+        skill_assigment[tree_key][skill_key] = level;
+    }
 }
 
 // タグ作成
