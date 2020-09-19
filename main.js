@@ -140,8 +140,16 @@ $(window).on('load', function () {
             // マウスオーバ解除で説明文を初期化
             $('#description').text('');
         }
+    });
 
-        
+    // 残りスキルポイントの色
+    $(`#point_left`).on({
+        'DOMSubtreeModified propertychange': function () {
+            if($(this).text() == '0')
+                $(this).attr({'class': 'no_point'});
+            else
+                $(this).attr({'class': ''});
+        }
     });
 });
 
