@@ -2,6 +2,8 @@ let json;
 
 const max_skill_point = 50;
 const skill_column_count = 5; // 横に並べるスキルの数
+const header_count = 'count_header';
+const header_limit = 'limit_header';
 
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
@@ -27,9 +29,9 @@ $(function () {
                 let tree_tier_header = `tree${tree}_tier${tier}`;
                 // Tierヘッダ
                 div_tree.append($('<span>').attr({ 'class': 'tree' }).text(`Tier ${tier}: `));
-                div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_count` }).text('0'));
+                div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_${header_count}` }).text('0'));
                 div_tree.append($('<span>').attr({ 'class': 'tree' }).text('/'));
-                div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_limit` }).text(tier_limit));
+                div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_${header_limit}` }).text(tier_limit));
                 // Tier画像等
                 let div_table = ($('<div>').attr({ 'class': 'table' }));
                 let table = ($('<table>'));
@@ -93,14 +95,14 @@ $(window).on('load', function () {
             {
                 // tier1以降の場合は前のtierで条件をクリアしているか検証
                 let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
-                let count_prev = $(`#${tree_tier_header_prev}_count`);
-                let limit_prev = $(`#${tree_tier_header_prev}_limit`);
+                let count_prev = $(`#${tree_tier_header_prev}_${header_count}`);
+                let limit_prev = $(`#${tree_tier_header_prev}_${header_limit}`);
                 if(count_prev.text() < limit_prev.text())
                     return false;
             }
     
             // tierのカウント
-            let count = $(`#${this_tree_tier_header}_count`);
+            let count = $(`#${this_tree_tier_header}_${header_count}`);
             // スキルのカウント
             let skill_count = $(`#${this_tree_tier_skill_header}_count`);
             let skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
@@ -151,6 +153,17 @@ $(window).on('load', function () {
                 $(this).attr({'class': ''});
         }
     });
+
+    // Tierタイトルの色
+    $(`[id=]`).on({
+        'DOMSubtreeModified propertychange': function () {
+            if($(this).text() == '0')
+                $(this).attr({'class': 'no_point'});
+            else
+                $(this).attr({'class': ''});
+        }
+    });
+
 });
 
 
