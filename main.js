@@ -115,6 +115,7 @@ $(window).on('load', function () {
             // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
             let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
             let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
+            let this_key = $(this).attr('id').match(/[a-z]{2}$/)[0]; // skill key
             let this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
             let this_tree_tier_skill_header = $(this).attr('id');
             
@@ -143,6 +144,8 @@ $(window).on('load', function () {
                 // スキルレベルが最大の場合は変更しない
                 if(skill_count.text() == skill_limit.text())
                     return false;
+
+                skill_assigment[this_tree][this_key]+=1;
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
@@ -150,6 +153,7 @@ $(window).on('load', function () {
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
                 // 右クリック
+                skill_assigment[this_tree][this_key]-=1;
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
