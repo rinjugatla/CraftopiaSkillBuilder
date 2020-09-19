@@ -1,7 +1,7 @@
 let json;
 let skill_assigment = {}; // スキル割り当て状況
 
-const max_skill_point = 50;
+const max_skill_point = 50; // 最大スキルポイント
 const skill_column_count = 5; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
@@ -106,7 +106,6 @@ $(function () {
                         table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
                     }
                 }
-
                 table.append(table_tr_name);
                 table.append(table_tr_icon);
                 table.append(table_tr_level);
