@@ -40,3 +40,40 @@
 .allow_next_tier{
     color: #ff2cff;
 }
+/* 
+タブ切り替え
+参考 https://www.design-memo.com/coding/jquery-tab-change
+*/
+.skill_tabs {
+    list-style: none;
+}
+.skill_tabs li {
+    float: left;
+    margin-right: 10px;
+    background: #efefef;
+}
+.skill_tabs li.current {
+    background: #00aeff;
+}
+.skill_tabs li a {
+    display: block;
+    border: 1px solid #aaa;
+    border-bottom: none;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    text-align: center;
+}
+.skill_tabs li.current a {
+    color: #fff; 
+}
+.tab_contents {
+    clear: both;
+    display: none;
+    padding: 10px;
+    border: 1px solid #aaa;
+    background: #edf4f7;
+}
+.tab_contents.current {
+    display: block;
+}

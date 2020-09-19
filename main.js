@@ -2,6 +2,7 @@ let json;
 
 const max_skill_point = 50;
 const skill_column_count = 5; // 横に並べるスキルの数
+const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
 
@@ -17,11 +18,20 @@ function ABCConvertToInt(c) {
 $(function () {
     $.getJSON('skilltree.json', function (data) {
         json = data;
-        let div_tree = $('#skilltree');
         let tree_length = data.length;
-
         for (let i = 0; i < tree_length; i++) {
             let tree = data[i].key;
+            let tree_name = data[i].name;
+            // スキルツリータブ
+            let skill_tab = $('<li>').append($('<a>').attr({'href': `#${skilltree_id_header}${tree}`}).text(tree_name));
+            // スキルツリー内容
+            let div_tree = ($('<div>').attr({'id': `${skilltree_id_header}${tree}`, 'class': 'tab_contents'}));
+            if(i == 0){
+                skill_tab.addClass('current');
+                div_tree.addClass('current');
+            }
+            $('#skill_tabs').append(skill_tab); 
+            
             let tiers_length = data[i]['data']['tiers'].length;
             for (let j = 0; j < tiers_length; j++) {
                 let tier = j + 1;
@@ -74,6 +84,8 @@ $(function () {
                 div_tree.append(div_table);
                 div_tree.append('<br>');
             }
+            // スキル情報をdivタグに追加
+            $('#skilltrees').append(div_tree);
         }
     });
 });
@@ -81,6 +93,14 @@ $(function () {
 $(window).on('load', function () {
     // 値設定
     $('#point_left').text(max_skill_point);
+
+    // タブの動作
+    $(".skill_tabs a").click(function () {
+        $(this).parent().addClass("current").siblings(".current").removeClass("current");
+        var tabContents = $(this).attr("href");
+        $(tabContents).addClass("current").siblings(".current").removeClass("current");
+        return false;
+    });
 
     // イベント追加
     $(`.skill_img`).on({
