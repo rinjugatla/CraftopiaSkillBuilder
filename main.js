@@ -136,7 +136,6 @@ $(window).on('load', function () {
             let description = json[this_tree_num]['data']['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
             $('#description').text(description);
         },
-        //ふたつ目のイベントハンドラ
         'mouseleave': function () {
             // マウスオーバ解除で説明文を初期化
             $('#description').text('');
