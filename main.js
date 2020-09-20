@@ -159,7 +159,7 @@ $(window).on('load', function () {
                 let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
                 let count_prev = $(`#${tree_tier_header_prev}_${header_count}`);
                 let limit_prev = $(`#${tree_tier_header_prev}_${header_limit}`);
-                if(count_prev.text() < limit_prev.text())
+                if(Number(count_prev.text()) < Number(limit_prev.text()))
                     return false;
             }
     
