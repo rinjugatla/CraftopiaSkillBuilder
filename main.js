@@ -65,10 +65,22 @@ function AssigmentToDOM(){
     $('#point_left').text(max_skill_point - total_point);
 }
 
+// タグ作成に使用するjsonファイルパスをURLパラメータから取得
+// todo: ファイルが存在しない場合の処理
+function GetSkilltreeFilepath(){
+    let result = './skilltree/:version.json';
+    if(args['v'])
+        result = result.replace(':version', args['v']);
+    else
+        result = result.replace(':version', 'latest');
+    return result;
+}
+
 // タグ作成
 $(function () {
     ImportArgs();
-    $.getJSON('skilltree.json', function (data) {
+    let json_filepath = GetSkilltreeFilepath();
+    $.getJSON(json_filepath, function (data) {
         json = data;
         let tree_length = data.length;
         for (let i = 0; i < tree_length; i++) {
