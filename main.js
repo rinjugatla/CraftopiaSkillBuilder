@@ -126,10 +126,10 @@ $(function () {
                 skill_assigment[tree][tier] = {};
 
                 // Tierヘッダ
-                div_tree.append($('<span>').attr({ 'class': 'tree' }).text(`Tier ${tier}: `));
-                div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_${header_count}` }).text('0'));
-                div_tree.append($('<span>').attr({ 'class': 'tree' }).text('/'));
-                div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_${header_limit}` }).text(tier_limit));
+                div_tree.append($('<span>').attr({ 'class': 'header' }).text(`Tier ${tier}: `));
+                div_tree.append($('<span>').attr({ 'class': 'header', 'id': `${tree_tier_header}_${header_count}` }).text('0'));
+                div_tree.append($('<span>').attr({ 'class': 'header' }).text('/'));
+                div_tree.append($('<span>').attr({ 'class': 'header', 'id': `${tree_tier_header}_${header_limit}` }).text(tier_limit));
                 // Tier画像等
                 let div_table = ($('<div>').attr({ 'class': 'table' }));
                 let table = ($('<table>'));
@@ -265,9 +265,9 @@ $(window).on('load', function () {
     $(`#point_left`).on({
         'DOMSubtreeModified propertychange': function () {
             if($(this).text() == '0')
-                $(this).attr({'class': 'no_point'});
+                $(this).addClass('no_point');
             else
-                $(this).attr({'class': ''});
+                $(this).removeClass('no_point');
         }
     });
 
@@ -276,9 +276,9 @@ $(window).on('load', function () {
         'DOMSubtreeModified propertychange': function () {
             let limit_header = $(`#${$(this).attr('id').replace(header_count, header_limit)}`);
             if(Number($(this).text()) >= Number(limit_header.text()))
-                $(this).attr({'class': 'allow_next_tier'});
+                $(this).addClass('allow_next_tier');
             else
-                $(this).attr({'class': ''});
+                $(this).removeClass('allow_next_tier');
         }
     });
 
