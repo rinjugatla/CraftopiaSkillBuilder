@@ -39,18 +39,22 @@ function ExportSkillAssigmentString(){
 }
 
 // スキル割り当て文字列からDOMに反映
-function ImportSkillAssigmentString(assigment){
-    RestoreSkillAssigment(assigment);
-    AssigmentToDOM();
+function ImportSkillAssigmentString(){
+    if(args['skills']){
+        let assigment = args['skills'];
+        RestoreSkillAssigment(assigment);
+        AssigmentToDOM();
+    }
 }
 // スキル割り当て文字列からスキル割り当て状況を復元
 function RestoreSkillAssigment(assigment){
-    let assigment_split = assigment.match(/.{4}/g);
+    let assigment_split = assigment.match(/.{5}/g);
     for(let i = 0; i < assigment_split.length; i++){
         let tree_key = assigment_split[i].charAt(0);
-        let skill_key = assigment_split[i].substring(1,3);
-        let level = Number(assigment_split[i].charAt(3));
-        skill_assigment[tree_key][skill_key] = level;
+        let tier_key = assigment_split[i].charAt(1);
+        let skill_key = assigment_split[i].substring(2,4);
+        let level = Number(assigment_split[i].charAt(4));
+        skill_assigment[tree_key][tier_key][skill_key] = level;
     }
 }
 // DOMにスキル割り当て状況を反映
