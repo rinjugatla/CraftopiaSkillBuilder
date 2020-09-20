@@ -233,7 +233,6 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
-                ExportSkillAssigmentString();
             }            
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
@@ -242,9 +241,11 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
-                ExportSkillAssigmentString();
             }
-    
+            
+            ExportSkillAssigmentString();
+            UpdateURL();
+
             return false;
         },
         'mouseenter': function () {
