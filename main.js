@@ -15,6 +15,17 @@ function ABCConvertToInt(c) {
     return alphabet.indexOf(upper);
 }
 
+// URLパラメーターを取得し辞書に格納
+// https://qiita.com/tonkatu_tanaka/items/99d167ded9330dbc4019
+let args = {};
+function ImportArgs(){
+    let pairs=location.search.substring(1).split('&');
+    for(let i=0;pairs[i];i++) {
+        let kv = pairs[i].split('=');
+        args[kv[0]]=kv[1];
+    }
+}
+
 // スキル割り当て状況の文字列を作成
 function ExportSkillAssigmentString(){
     // 書式 A1aa3A2ac2Baa6 TreeKey+Tier+SkillKey+SkillLevel
@@ -56,6 +67,7 @@ function AssigmentToDOM(){
 
 // タグ作成
 $(function () {
+    ImportArgs();
     $.getJSON('skilltree.json', function (data) {
         json = data;
         let tree_length = data.length;
