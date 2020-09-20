@@ -17,14 +17,13 @@ function ABCConvertToInt(c) {
 
 // スキル割り当て状況の文字列を作成
 function ExportSkillAssigmentString(){
-    // 書式 Aaa1Aac2Baa6
+    // 書式 A1aa3A2ac2Baa6 TreeKey+Tier+SkillKey+SkillLevel
     let result = '';
-    for(let tree_key in skill_assigment){
-        for(let skill_key in skill_assigment[tree_key]){
-            if(skill_assigment[tree_key][skill_key] != 0)
-                result += (tree_key+skill_key+skill_assigment[tree_key][skill_key]);
-        }
-    }
+    for(let tree_key in skill_assigment)
+        for(let tier_key in skill_assigment[tree_key])
+            for(let skill_key in skill_assigment[tree_key][tier_key])
+                if(skill_assigment[tree_key][tier_key][skill_key] != 0)
+                    result += (tree_key+tier_key+skill_key+skill_assigment[tree_key][tier_key][skill_key]);
     return result;
 }
 // スキル割り当て文字列からスキル割り当て状況を復元
@@ -37,6 +36,7 @@ function ImportSkillAssigmentString(assigment){
         skill_assigment[tree_key][skill_key] = level;
     }
 }
+
 
 // タグ作成
 $(function () {
@@ -63,6 +63,9 @@ $(function () {
                 let tier = j + 1;
                 let tier_limit = data[i]['data']['tiers'][j]['limit'];
                 let tree_tier_header = `tree${tree}_tier${tier}`;
+                // スキルツリー割り当て状況にtierを追加
+                skill_assigment[tree][tier] = {};
+
                 // Tierヘッダ
                 div_tree.append($('<span>').attr({ 'class': 'tree' }).text(`Tier ${tier}: `));
                 div_tree.append($('<span>').attr({ 'class': 'tree', 'id': `${tree_tier_header}_${header_count}` }).text('0'));
@@ -82,7 +85,7 @@ $(function () {
                     let skill = data[i]['data']['tiers'][j]['skills'][k];
 
                     // スキルツリー割り当て状況にスキルを追加
-                    skill_assigment[tree][skill.key] = 0;
+                    skill_assigment[tree][tier][skill.key] = 0;
                     
                     // 名前追加
                     table_tr_name.append($('<td>').text(`${skill.name}`));
@@ -167,7 +170,7 @@ $(window).on('load', function () {
                 if(skill_count.text() == skill_limit.text())
                     return false;
 
-                skill_assigment[this_tree][this_key]+=1;
+                skill_assigment[this_tree][this_tier][this_key]+=1;
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
@@ -176,7 +179,7 @@ $(window).on('load', function () {
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
                 // 右クリック
-                skill_assigment[this_tree][this_key]-=1;
+                skill_assigment[this_tree][this_tier][this_key]-=1;
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
