@@ -61,11 +61,17 @@ function RestoreSkillAssigment(assigment){
 function AssigmentToDOM(){
     let total_point = 0; // 使用済み合計ポイント
     for(let tree_key in skill_assigment)
-        for(let tier_key in skill_assigment[tree_key])
+        for(let tier_key in skill_assigment[tree_key]){
+            let tier_point = 0;
             for(let skill_key in skill_assigment[tree_key][tier_key]){
                 $(`#tree${tree_key}_tier${tier_key}_${skill_key}_count`).text(skill_assigment[tree_key][tier_key][skill_key]);
+                tier_point += skill_assigment[tree_key][tier_key][skill_key];
                 total_point += skill_assigment[tree_key][tier_key][skill_key];
             }
+            // tierに振ったポイントを復元
+            $(`#tree${tree_key}_tier${tier_key}_count_header`).text(tier_point);
+        }
+    // 残りポイントを復元
     $('#point_left').text(max_skill_point - total_point);
 }
 
