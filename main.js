@@ -26,8 +26,14 @@ function ExportSkillAssigmentString(){
                     result += (tree_key+tier_key+skill_key+skill_assigment[tree_key][tier_key][skill_key]);
     return result;
 }
-// スキル割り当て文字列からスキル割り当て状況を復元
+
+// スキル割り当て文字列からDOMに反映
 function ImportSkillAssigmentString(assigment){
+    RestoreSkillAssigment(assigment);
+    AssigmentToDOM();
+}
+// スキル割り当て文字列からスキル割り当て状況を復元
+function RestoreSkillAssigment(assigment){
     let assigment_split = assigment.match(/.{4}/g);
     for(let i = 0; i < assigment_split.length; i++){
         let tree_key = assigment_split[i].charAt(0);
