@@ -32,11 +32,20 @@ function ImportSkillAssigmentString(assigment){
     for(let i = 0; i < assigment_split.length; i++){
         let tree_key = assigment_split[i].charAt(0);
         let skill_key = assigment_split[i].substring(1,3);
-        let level = assigment_split[i].charAt(3);
+        let level = Number(assigment_split[i].charAt(3));
         skill_assigment[tree_key][skill_key] = level;
     }
 }
-
+// DOMにスキル割り当て状況を反映
+function AssigmentToDOM(){
+    let total_point = 0; // 使用済み合計ポイント
+    for(let tree_key in skill_assigment)
+        for(let tier_key in skill_assigment[tree_key])
+            for(let skill_key in skill_assigment[tree_key][tier_key]){
+                $(`#tree${tree_key}_tier${tier_key}_${skill_key}_count`).text(skill_assigment[tree_key][tier_key][skill_key]);
+                total_point += skill_assigment[tree_key][tier_key][skill_key];
+            }
+}
 
 // タグ作成
 $(function () {
