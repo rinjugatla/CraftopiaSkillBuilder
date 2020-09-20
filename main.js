@@ -1,6 +1,7 @@
 let json;
 let skill_assigment = {}; // スキル割り当て状況
 
+const latest_skilltree_version = 'v1'; // スキルツリーバージョン
 const max_skill_point = 50; // 最大スキルポイント
 const skill_column_count = 5; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
@@ -82,8 +83,16 @@ function GetSkilltreeFilepath(){
     if(args['v'])
         result = result.replace(':version', args['v']);
     else
-        result = result.replace(':version', 'latest');
+        result = result.replace(':version', latest_skilltree_version);
     return result;
+}
+
+// URLをパラメータ付きで更新
+function UpdateURL(){
+    let url = new URL(location);
+    url.searchParams.set('v', latest_skilltree_version);
+    url.searchParams.set('skills', ExportSkillAssigmentString());
+    history.replaceState(null, null, url);
 }
 
 // タグ作成
