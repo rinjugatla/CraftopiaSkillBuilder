@@ -45,6 +45,7 @@ function AssigmentToDOM(){
                 $(`#tree${tree_key}_tier${tier_key}_${skill_key}_count`).text(skill_assigment[tree_key][tier_key][skill_key]);
                 total_point += skill_assigment[tree_key][tier_key][skill_key];
             }
+    $('#point_left').text(max_skill_point - total_point);
 }
 
 // タグ作成
