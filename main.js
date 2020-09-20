@@ -117,10 +117,10 @@ $(function () {
             }
             $('#skill_tabs').append(skill_tab); 
             
-            let tiers_length = data[i]['data']['tiers'].length;
+            let tiers_length = data[i]['tiers'].length;
             for (let j = 0; j < tiers_length; j++) {
                 let tier = j + 1;
-                let tier_limit = data[i]['data']['tiers'][j]['limit'];
+                let tier_limit = data[i]['tiers'][j]['limit'];
                 let tree_tier_header = `tree${tree}_tier${tier}`;
                 // スキルツリー割り当て状況にtierを追加
                 skill_assigment[tree][tier] = {};
@@ -138,10 +138,10 @@ $(function () {
                 let table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
                 let table_tr_level_td;
 
-                let skills_length = data[i]['data']['tiers'][j]['skills'].length;
+                let skills_length = data[i]['tiers'][j]['skills'].length;
                 for (let k = 0; k < skills_length; k++) {
                     // Tier内スキル情報
-                    let skill = data[i]['data']['tiers'][j]['skills'][k];
+                    let skill = data[i]['tiers'][j]['skills'][k];
 
                     // スキルツリー割り当て状況にスキルを追加
                     skill_assigment[tree][tier][skill.key] = 0;
@@ -252,7 +252,7 @@ $(window).on('load', function () {
             let this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
             let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
             let this_skill_num = ABCConvertToInt($(this).attr('id').match(/([a-z])$/)[0]);
-            let description = json[this_tree_num]['data']['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
+            let description = json[this_tree_num]['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
             $('#description').text(description);
         },
         'mouseleave': function () {
