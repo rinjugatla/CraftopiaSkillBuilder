@@ -266,6 +266,9 @@ $(window).on('load', function () {
                 $(this).attr({'class': ''});
         }
     });
+
+    // URLパラメータからスキル割り当て状況を復元
+    ImportSkillAssigmentString();
 });
 
 
