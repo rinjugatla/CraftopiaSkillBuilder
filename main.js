@@ -242,8 +242,7 @@ $(window).on('load', function () {
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
             }
-            
-            ExportSkillAssigmentString();
+
             UpdateURL();
 
             return false;
