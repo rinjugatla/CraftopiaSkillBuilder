@@ -1,12 +1,15 @@
-let json;
-let skill_assigment = {}; // スキル割り当て状況
-
-const latest_skilltree_version = 'v1'; // スキルツリーバージョン
+const latest_skilltree_version = 'v1'; // 最新のスキルツリーバージョン
 const max_skill_point = 50; // 最大スキルポイント
 const skill_column_count = 5; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
+const default_language = 'jp';
+const allow_language = ['jp', 'en'];
+
+let json;
+let skill_assigment = {}; // スキル割り当て状況
+let language = default_language;
 
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
@@ -87,10 +90,18 @@ function GetSkilltreeFilepath(){
     return result;
 }
 
+// URLパラメータから言語設定を取得
+function GetLanguage(){
+    language = default_language;
+    if(args['lang'] && allow_language.includes(args['lang']))
+        language = args['lang'];
+}
+
 // URLをパラメータ付きで更新
 function UpdateURL(){
     let url = new URL(location);
     url.searchParams.set('v', latest_skilltree_version);
+    url.searchParams.set('lang', language);
     url.searchParams.set('skills', ExportSkillAssigmentString());
     history.replaceState(null, null, url);
 }
