@@ -1,7 +1,7 @@
 const allow_skilltree_version = ['v1']; // 許可するスキルツリーバージョン
 const latest_skilltree_version = allow_skilltree_version.slice(-1)[0]; // 最新のスキルツリーバージョン
 const max_skill_point = 50; // 最大スキルポイント
-const skill_column_count = 5; // 横に並べるスキルの数
+const skill_column_count = 8; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
@@ -97,7 +97,7 @@ function GetSkilltreeFilepath(){
 }
 
 // URLパラメータから言語設定を取得
-function GetLanguage(){
+function SetLanguage(){
     language = default_language;
     if(args['lang'] && allow_language.includes(args['lang']))
         language = args['lang'];
@@ -115,6 +115,8 @@ function UpdateURL(){
 // タグ作成
 $(function () {
     ImportArgs();
+    SetLanguage();
+
     let json_filepath = GetSkilltreeFilepath();
     $.getJSON(json_filepath, function (data) {
         json = data;
