@@ -7,6 +7,7 @@ const header_count = 'count_header';
 const header_limit = 'limit_header';
 const default_language = 'jp';
 const allow_language = ['jp', 'en']; // 許可する言語設定
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 let json;
 let skill_assigment = {}; // スキル割り当て状況
@@ -15,9 +16,14 @@ let language = default_language;
 // アルファベットから数字を取得
 // https://qiita.com/jun910/items/fca533808b7f20ff9d21
 function ABCConvertToInt(c) {
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let upper = c.toUpperCase();
-    return alphabet.indexOf(upper);
+    let lower = c.toLowerCase();
+    return alphabet.indexOf(lower);
+}
+// スキルキー(aa, bdなど)から数字を取得
+function SkillKeyConvertToInt(skill_key){
+    first = ABCConvertToInt(skill_key.charAt(0));
+    second = ABCConvertToInt(skill_key.charAt(1));
+    return first * 26 + second;
 }
 
 // URLパラメーターを取得し辞書に格納
@@ -262,7 +268,7 @@ $(window).on('load', function () {
             // アイコンにマウスオーバした際に説明文を表示
             let this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
             let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
-            let this_skill_num = ABCConvertToInt($(this).attr('id').match(/([a-z])$/)[0]);
+            let this_skill_num = SkillKeyConvertToInt($(this).attr('id').match(/([a-z]{2})$/)[0]);
             let description = json[this_tree_num]['tiers'][this_tier - 1]['skills'][this_skill_num]['description'][language];
             $('#description').text(description);
         },
