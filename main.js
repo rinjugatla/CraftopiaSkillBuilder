@@ -114,8 +114,8 @@ $(function () {
         json = data;
         let tree_length = data.length;
         for (let i = 0; i < tree_length; i++) {
-            let tree = data[i].key;
-            let tree_name = data[i].name.jp;
+            let tree = data[i]['key'];
+            let tree_name = data[i]['name']['jp'];
             // スキル割り当て状況にスキルツリーを追加
             skill_assigment[tree] = {};
             // スキルツリータブ
@@ -158,7 +158,7 @@ $(function () {
                     skill_assigment[tree][tier][skill.key] = 0;
                     
                     // 名前追加
-                    table_tr_name.append($('<td>').text(`${skill.name.jp}`));
+                    table_tr_name.append($('<td>').text(`${skill['name']['jp']}`));
                     // アイコン追加
                     table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/${skill.icon}` })))
                     // 取得状況
