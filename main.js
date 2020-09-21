@@ -104,7 +104,7 @@ $(function () {
         let tree_length = data.length;
         for (let i = 0; i < tree_length; i++) {
             let tree = data[i].key;
-            let tree_name = data[i].name;
+            let tree_name = data[i].name.jp;
             // スキル割り当て状況にスキルツリーを追加
             skill_assigment[tree] = {};
             // スキルツリータブ
@@ -147,9 +147,9 @@ $(function () {
                     skill_assigment[tree][tier][skill.key] = 0;
                     
                     // 名前追加
-                    table_tr_name.append($('<td>').text(`${skill.name}`));
+                    table_tr_name.append($('<td>').text(`${skill.name.jp}`));
                     // アイコン追加
-                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/${tree}/${skill.key}.png` })))
+                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/${skill.icon}` })))
                     // 取得状況
                     table_tr_level_td = $('<td>').append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_count` }).text('0'));
                     table_tr_level_td.append($('<span>').text(' / '));
@@ -252,7 +252,7 @@ $(window).on('load', function () {
             let this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
             let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
             let this_skill_num = ABCConvertToInt($(this).attr('id').match(/([a-z])$/)[0]);
-            let description = json[this_tree_num]['tiers'][this_tier - 1]['skills'][this_skill_num]['description'];
+            let description = json[this_tree_num]['tiers'][this_tier - 1]['skills'][this_skill_num]['description']['jp'];
             $('#description').text(description);
         },
         'mouseleave': function () {
