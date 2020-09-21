@@ -1,11 +1,12 @@
-const latest_skilltree_version = 'v1'; // 最新のスキルツリーバージョン
+const allow_skilltree_version = ['v1']; // 許可するスキルツリーバージョン
+const latest_skilltree_version = allow_skilltree_version.slice(-1)[0]; // 最新のスキルツリーバージョン
 const max_skill_point = 50; // 最大スキルポイント
 const skill_column_count = 5; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
 const default_language = 'jp';
-const allow_language = ['jp', 'en'];
+const allow_language = ['jp', 'en']; // 許可する言語設定
 
 let json;
 let skill_assigment = {}; // スキル割り当て状況
@@ -83,10 +84,9 @@ function AssigmentToDOM(){
 // todo: ファイルが存在しない場合の処理
 function GetSkilltreeFilepath(){
     let result = './skilltree/:version.json';
-    if(args['v'])
+    result = result.replace(':version', latest_skilltree_version);
+    if(args['v'] && allow_skilltree_version.includes(args['v']))
         result = result.replace(':version', args['v']);
-    else
-        result = result.replace(':version', latest_skilltree_version);
     return result;
 }
 
