@@ -6,7 +6,7 @@ const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
 const default_language = 'jp';
-const allow_language = ['jp', 'en']; // 許可する言語設定
+const allow_language = ['jp', 'en', 'cn']; // 許可する言語設定
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 let json;
