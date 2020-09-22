@@ -287,9 +287,9 @@ $(window).on('load', function () {
         }
     });
 
-    // 残りスキルポイントの色
+    // スキルアイコンの色
     $(`.skill_point_count`).on({
-        'DOMSubtreeModified': function () {
+        'DOMSubtreeModified propertychange': function () {
             let img_id = $(this).attr('id').replace('_count', '');
             if($(this).text() == '0')
                 $(`#${img_id}`).addClass('skill_lock');
