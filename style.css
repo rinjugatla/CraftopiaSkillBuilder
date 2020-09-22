@@ -19,6 +19,27 @@
     }
 }
 
+.page_header{
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.title_header{
+    font-size: 40px;
+    margin: 0;
+    line-height: 50px;
+}
+.language_header{
+    line-height: 50px;
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+}
+.flag_header{
+    border: 1px #333 solid;
+    width: 30px;
+    height: 20px;
+}
 .header {
  font-size: 20px;
 }
