@@ -168,7 +168,7 @@ $(function () {
                     // 名前追加
                     table_tr_name.append($('<td>').text(`${skill['name'][language]}`));
                     // アイコン追加
-                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/${skill.icon}` })))
+                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/skills/${skill.icon}` })))
                     // 取得状況
                     table_tr_level_td = $('<td>').append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_count` }).text('0'));
                     table_tr_level_td.append($('<span>').text(' / '));
