@@ -1,7 +1,7 @@
 const allow_skilltree_version = ['v1']; // 許可するスキルツリーバージョン
 const latest_skilltree_version = allow_skilltree_version.slice(-1)[0]; // 最新のスキルツリーバージョン
 const max_skill_point = 50; // 最大スキルポイント
-const skill_column_count = 8; // 横に並べるスキルの数
+const skill_column_count = 10; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
@@ -170,9 +170,9 @@ $(function () {
                     // アイコン追加
                     table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img skill_lock`, 'src': `./img/skills/${skill.icon}` })))
                     // 取得状況
-                    table_tr_level_td = $('<td>').append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_count` }).text('0'));
+                    table_tr_level_td = $('<td>').append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_count`, 'class': 'skill_point_count' }).text('0'));
                     table_tr_level_td.append($('<span>').text(' / '));
-                    table_tr_level_td.append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_limit` }).text(`${skill.max}`));
+                    table_tr_level_td.append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_limit`, 'class': 'skill_point_limit' }).text(`${skill.max}`));
                     table_tr_level.append(table_tr_level_td);
 
                     if(k != 0 && (k % (skill_column_count - 1) == 0))
@@ -259,8 +259,6 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
-                
-                $(this).removeClass('skill_lock');
             }            
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
@@ -269,9 +267,6 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
-                
-                if(skill_count.text() == '0')
-                    $(this).addClass('skill_lock');
             }
 
             UpdateURL();
@@ -289,6 +284,17 @@ $(window).on('load', function () {
         'mouseleave': function () {
             // マウスオーバ解除で説明文を初期化
             $('#description').text('');
+        }
+    });
+
+    // 残りスキルポイントの色
+    $(`.skill_point_count`).on({
+        'DOMSubtreeModified': function () {
+            let img_id = $(this).attr('id').replace('_count', '');
+            if($(this).text() == '0')
+                $(`#${img_id}`).addClass('skill_lock');
+            else
+                $(`#${img_id}`).removeClass('skill_lock');
         }
     });
 
