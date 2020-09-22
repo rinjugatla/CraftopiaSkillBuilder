@@ -205,11 +205,18 @@ $(window).on('load', function () {
     $('#point_left').text(max_skill_point);
 
     // タブの動作
-    $(".skill_tabs a").click(function () {
+    $('.skill_tabs a').click(function () {
         $(this).parent().addClass("current").siblings(".current").removeClass("current");
         var tabContents = $(this).attr("href");
         $(tabContents).addClass("current").siblings(".current").removeClass("current");
         return false;
+    });
+
+    // 言語設定の変更
+    $('.language_header img').click(function(){
+        language = $(this).attr('src').match(/([a-z]{2}).svg/)[1];
+        UpdateURL();
+        location.reload();
     });
 
     // イベント追加
