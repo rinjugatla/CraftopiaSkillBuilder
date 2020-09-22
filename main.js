@@ -168,7 +168,7 @@ $(function () {
                     // 名前追加
                     table_tr_name.append($('<td>').text(`${skill['name'][language]}`));
                     // アイコン追加
-                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img`, 'src': `./img/skills/${skill.icon}` })))
+                    table_tr_icon.append($('<td>').append($('<img>').attr({ 'id': `${tree_tier_header}_${skill.key}`, 'class': `skill_img skill_lock`, 'src': `./img/skills/${skill.icon}` })))
                     // 取得状況
                     table_tr_level_td = $('<td>').append($('<span>').attr({ 'id': `${tree_tier_header}_${skill.key}_count` }).text('0'));
                     table_tr_level_td.append($('<span>').text(' / '));
@@ -259,6 +259,8 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())+1);
                 count.text(Number(count.text())+1);
                 $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
+                
+                $(this).removeClass('skill_lock');
             }            
             else if(e.which == 3 && Number(skill_count.text()) > 0)
             {
@@ -267,6 +269,9 @@ $(window).on('load', function () {
                 skill_count.text(Number(skill_count.text())-1);
                 count.text(Number(count.text())-1);
                 $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
+                
+                if(skill_count.text() == '0')
+                    $(this).addClass('skill_lock');
             }
 
             UpdateURL();
