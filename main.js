@@ -220,7 +220,6 @@ function AddDOMEvent(){
 // スキルレベルを上げるイベントを追加
 function AddSkillLevelUpEvent(){
     $(document).on('click', '.skill_img', function () {
-        // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
         let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
         let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
         let this_key = $(this).attr('id').match(/[a-z]{2}$/)[0]; // skill key
@@ -265,30 +264,22 @@ function AddSkillLevelUpEvent(){
 
 // スキルレベルを下げるイベントを追加
 function AddSkillLevelDownEvent(){
-    $(document).on('contextmenu', '.skill_img', function (e) {
-        // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
+    $(document).on('contextmenu', '.skill_img', function () {
         let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
         let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
         let this_key = $(this).attr('id').match(/[a-z]{2}$/)[0]; // skill key
         let this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
         let this_tree_tier_skill_header = $(this).attr('id');
-        
-        if(this_tier > 1)
-        {
-            // tier1以降の場合は前のtierで条件をクリアしているか検証
-            let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
-            let count_prev = $(`#${tree_tier_header_prev}_${header_count}`);
-            let limit_prev = $(`#${tree_tier_header_prev}_${header_limit}`);
-            if(Number(count_prev.text()) < Number(limit_prev.text()))
-                return false;
-        }
-
+    
         // tierのカウント
         let count = $(`#${this_tree_tier_header}_${header_count}`);
         // スキルのカウント
         let skill_count = $(`#${this_tree_tier_skill_header}_count`);
         let skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
-           
+
+        if(skill_count.text() == '0')
+            return false;
+
         // 右クリック
         skill_assigment[this_tree][this_tier][this_key]-=1;
         skill_count.text(Number(skill_count.text())-1);
