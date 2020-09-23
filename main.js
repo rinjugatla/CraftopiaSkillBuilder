@@ -198,7 +198,158 @@ $(function () {
             $('#skilltrees').append(div_tree);
         }
     });
+    
+    AddDOMEvent();
+    
 });
+
+// イベント追加
+function AddDOMEvent(){
+    AddSkillLevelUpEvent();
+    AddSkillLevelDownEvent();
+    AddShowSkillDescriptionEvent()
+    AddHideSkillDescriptionEvent();
+    AddChangeSkillColorEvent();
+    AddChangeColorTierCountEvent();
+    AddChangePointLeftColorEvent();
+}
+
+// スキルレベルを上げるイベントを追加
+function AddSkillLevelUpEvent(){
+    $(document).on('click', '.skill_img', function () {
+        // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
+        let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
+        let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
+        let this_key = $(this).attr('id').match(/[a-z]{2}$/)[0]; // skill key
+        let this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
+        let this_tree_tier_skill_header = $(this).attr('id');
+        
+        if(this_tier > 1)
+        {
+            // tier1以降の場合は前のtierで条件をクリアしているか検証
+            let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
+            let count_prev = $(`#${tree_tier_header_prev}_${header_count}`);
+            let limit_prev = $(`#${tree_tier_header_prev}_${header_limit}`);
+            if(Number(count_prev.text()) < Number(limit_prev.text()))
+                return false;
+        }
+
+        // tierのカウント
+        let count = $(`#${this_tree_tier_header}_${header_count}`);
+        // スキルのカウント
+        let skill_count = $(`#${this_tree_tier_skill_header}_count`);
+        let skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
+
+        // 残りスキルポイントがない場合は処理しない
+        if($('#point_left').text() == 0)
+            return;
+
+        // 左クリック
+        // スキルレベルが最大の場合は変更しない
+        if(skill_count.text() == skill_limit.text())
+            return false;
+
+        skill_assigment[this_tree][this_tier][this_key]+=1;
+        skill_count.text(Number(skill_count.text())+1);
+        count.text(Number(count.text())+1);
+        $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
+        
+        UpdateURL();
+
+        return false;
+    });
+}
+
+// スキルレベルを下げるイベントを追加
+function AddSkillLevelDownEvent(){
+    $(document).on('contextmenu', '.skill_img', function (e) {
+        // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
+        let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
+        let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
+        let this_key = $(this).attr('id').match(/[a-z]{2}$/)[0]; // skill key
+        let this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
+        let this_tree_tier_skill_header = $(this).attr('id');
+        
+        if(this_tier > 1)
+        {
+            // tier1以降の場合は前のtierで条件をクリアしているか検証
+            let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
+            let count_prev = $(`#${tree_tier_header_prev}_${header_count}`);
+            let limit_prev = $(`#${tree_tier_header_prev}_${header_limit}`);
+            if(Number(count_prev.text()) < Number(limit_prev.text()))
+                return false;
+        }
+
+        // tierのカウント
+        let count = $(`#${this_tree_tier_header}_${header_count}`);
+        // スキルのカウント
+        let skill_count = $(`#${this_tree_tier_skill_header}_count`);
+        let skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
+           
+        // 右クリック
+        skill_assigment[this_tree][this_tier][this_key]-=1;
+        skill_count.text(Number(skill_count.text())-1);
+        count.text(Number(count.text())-1);
+        $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
+
+        UpdateURL();
+
+        return false;
+    });
+}
+
+// スキル説明を表示するイベントを追加
+function AddShowSkillDescriptionEvent(){
+    $(document).on('mouseenter', '.skill_img', function () {
+        // アイコンにマウスオーバした際に説明文を表示
+        let this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
+        let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
+        let this_skill_num = SkillKeyConvertToInt($(this).attr('id').match(/([a-z]{2})$/)[0]);
+        let description = json[this_tree_num]['tiers'][this_tier - 1]['skills'][this_skill_num]['description'][language];
+        $('#description').text(description);
+    });
+}
+
+// スキル説明を非表示にするイベントを追加
+function AddHideSkillDescriptionEvent(){
+    $(document).on('mouseleave', '.skill_img', function () {
+        // マウスオーバ解除で説明文を初期化
+        $('#description').text('');
+    });
+}
+
+// スキルの色を変えるイベントを追加
+function AddChangeSkillColorEvent(){
+    // スキルアイコンの色
+    $(document).on('DOMSubtreeModified propertychange', '.skill_point_count', function () {
+        let img_id = $(this).attr('id').replace('_count', '');
+        if($(this).text() == '0')
+            $(`#${img_id}`).addClass('skill_lock');
+        else
+            $(`#${img_id}`).removeClass('skill_lock');
+    });
+}
+
+// スキルTierのポイントの色を変えるイベントを追加
+function AddChangeColorTierCountEvent(){
+    $(document).on('DOMSubtreeModified propertychange', '[id$=count_header]', function () {
+        let limit_header = $(`#${$(this).attr('id').replace(header_count, header_limit)}`);
+        if(Number($(this).text()) >= Number(limit_header.text()))
+            $(this).addClass('allow_next_tier');
+        else
+            $(this).removeClass('allow_next_tier');
+    });
+}
+
+// 残りスキルポイントの色を変えるイベントを追加
+function AddChangePointLeftColorEvent(){
+    $(document).on('DOMSubtreeModified propertychange', '#point_left', function () {
+        if($(this).text() == '0')
+            $(this).addClass('no_point');
+        else
+            $(this).removeClass('no_point');
+    });
+}
 
 $(window).on('load', function () {
     // 値設定
@@ -217,106 +368,6 @@ $(window).on('load', function () {
         language = $(this).attr('src').match(/([a-z]{2}).svg/)[1];
         UpdateURL();
         location.reload();
-    });
-
-    // イベント追加
-    $(`.skill_img`).on({
-        'click contextmenu': function (e) {
-            // アイコン左クリックでスキルレベル上昇、右クリックでレベルダウン
-            let this_tree = $(this).attr('id').match(/[A-Z]/)[0]; // ツリー
-            let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // tier
-            let this_key = $(this).attr('id').match(/[a-z]{2}$/)[0]; // skill key
-            let this_tree_tier_header = `tree${this_tree}_tier${this_tier}`;
-            let this_tree_tier_skill_header = $(this).attr('id');
-            
-            if(this_tier > 1)
-            {
-                // tier1以降の場合は前のtierで条件をクリアしているか検証
-                let tree_tier_header_prev = `tree${this_tree}_tier${this_tier-1}`;
-                let count_prev = $(`#${tree_tier_header_prev}_${header_count}`);
-                let limit_prev = $(`#${tree_tier_header_prev}_${header_limit}`);
-                if(Number(count_prev.text()) < Number(limit_prev.text()))
-                    return false;
-            }
-    
-            // tierのカウント
-            let count = $(`#${this_tree_tier_header}_${header_count}`);
-            // スキルのカウント
-            let skill_count = $(`#${this_tree_tier_skill_header}_count`);
-            let skill_limit = $(`#${this_tree_tier_skill_header}_limit`);
-            if(e.which == 1)
-            {
-                // 残りスキルポイントがない場合は処理しない
-                if($('#point_left').text() == 0)
-                    return;
-
-                // 左クリック
-                // スキルレベルが最大の場合は変更しない
-                if(skill_count.text() == skill_limit.text())
-                    return false;
-
-                skill_assigment[this_tree][this_tier][this_key]+=1;
-                skill_count.text(Number(skill_count.text())+1);
-                count.text(Number(count.text())+1);
-                $('#point_left').text(Number($('#point_left').text())-1); // 残りスキルポイント
-            }            
-            else if(e.which == 3 && Number(skill_count.text()) > 0)
-            {
-                // 右クリック
-                skill_assigment[this_tree][this_tier][this_key]-=1;
-                skill_count.text(Number(skill_count.text())-1);
-                count.text(Number(count.text())-1);
-                $('#point_left').text(Number($('#point_left').text())+1); // 残りスキルポイント
-            }
-
-            UpdateURL();
-
-            return false;
-        },
-        'mouseenter': function () {
-            // アイコンにマウスオーバした際に説明文を表示
-            let this_tree_num = ABCConvertToInt($(this).attr('id').match(/[A-Z]/)[0]);
-            let this_tier = $(this).attr('id').match(/[\d]+/)[0]; // 配列インデックスとずれているため注意
-            let this_skill_num = SkillKeyConvertToInt($(this).attr('id').match(/([a-z]{2})$/)[0]);
-            let description = json[this_tree_num]['tiers'][this_tier - 1]['skills'][this_skill_num]['description'][language];
-            $('#description').text(description);
-        },
-        'mouseleave': function () {
-            // マウスオーバ解除で説明文を初期化
-            $('#description').text('');
-        }
-    });
-
-    // スキルアイコンの色
-    $(`.skill_point_count`).on({
-        'DOMSubtreeModified propertychange': function () {
-            let img_id = $(this).attr('id').replace('_count', '');
-            if($(this).text() == '0')
-                $(`#${img_id}`).addClass('skill_lock');
-            else
-                $(`#${img_id}`).removeClass('skill_lock');
-        }
-    });
-
-    // 残りスキルポイントの色
-    $(`#point_left`).on({
-        'DOMSubtreeModified propertychange': function () {
-            if($(this).text() == '0')
-                $(this).addClass('no_point');
-            else
-                $(this).removeClass('no_point');
-        }
-    });
-
-    // Tierタイトルの色
-    $(`[id$=count_header]`).on({
-        'DOMSubtreeModified propertychange': function () {
-            let limit_header = $(`#${$(this).attr('id').replace(header_count, header_limit)}`);
-            if(Number($(this).text()) >= Number(limit_header.text()))
-                $(this).addClass('allow_next_tier');
-            else
-                $(this).removeClass('allow_next_tier');
-        }
     });
 
     // URLパラメータからスキル割り当て状況を復元
