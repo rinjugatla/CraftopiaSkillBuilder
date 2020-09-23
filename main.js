@@ -152,9 +152,9 @@ $(function () {
                 // Tier画像等
                 let div_table = ($('<div>').attr({ 'class': 'table' }));
                 let table = ($('<table>'));
-                let table_tr_name = ($('<tr>').attr({ 'class': 'name' }));
-                let table_tr_icon = ($('<tr>').attr({ 'class': 'icon' }));
-                let table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
+                let table_tr_name = ($('<tr>').attr({ 'class': 'skill_name' }));
+                let table_tr_icon = ($('<tr>').attr({ 'class': 'skill_icon' }));
+                let table_tr_level = ($('<tr>').attr({ 'class': 'skill_level' }));
                 let table_tr_level_td;
 
                 let skills_length = data[i]['tiers'][j]['skills'].length;
