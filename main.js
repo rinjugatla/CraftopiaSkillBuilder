@@ -112,11 +112,11 @@ function UpdateURL(){
     history.replaceState(null, null, url);
 }
 
-// タグ作成
 $(function () {
     ImportArgs();
     SetLanguage();
 
+    // タグ作成
     let json_filepath = GetSkilltreeFilepath();
     $.getJSON(json_filepath, function (data) {
         json = data;
@@ -199,6 +199,7 @@ $(function () {
         }
     });
     
+    // 各種イベントを追加
     AddDOMEvent();
     
 });
@@ -212,6 +213,8 @@ function AddDOMEvent(){
     AddChangeSkillColorEvent();
     AddChangeColorTierCountEvent();
     AddChangePointLeftColorEvent();
+    AddChangeTabEvent();
+    AddChangeLanguageEvent();
 }
 
 // スキルレベルを上げるイベントを追加
@@ -351,24 +354,28 @@ function AddChangePointLeftColorEvent(){
     });
 }
 
-$(window).on('load', function () {
-    // 値設定
-    $('#point_left').text(max_skill_point);
-
-    // タブの動作
-    $('.skill_tabs a').click(function () {
+// タブ切り替えイベントを追加
+function AddChangeTabEvent(){
+    $(document).on('click', '.skill_tabs a', function () {
         $(this).parent().addClass("current").siblings(".current").removeClass("current");
         var tabContents = $(this).attr("href");
         $(tabContents).addClass("current").siblings(".current").removeClass("current");
         return false;
     });
+}
 
-    // 言語設定の変更
-    $('.language_header img').click(function(){
-        language = $(this).attr('src').match(/([a-z]{2}).svg/)[1];
-        UpdateURL();
-        location.reload();
+// 言語変更イベントの追加
+function AddChangeLanguageEvent(){
+    $(document).on('click', '.language_header img', function () {
+            language = $(this).attr('src').match(/([a-z]{2}).svg/)[1];
+            UpdateURL();
+            location.reload();
     });
+}
+
+$(window).on('load', function () {
+    // 値設定
+    $('#point_left').text(max_skill_point);
 
     // URLパラメータからスキル割り当て状況を復元
     ImportSkillAssigmentString();
