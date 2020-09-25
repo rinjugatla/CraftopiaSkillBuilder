@@ -127,7 +127,10 @@ $(function () {
             // スキル割り当て状況にスキルツリーを追加
             skill_assigment[tree] = {};
             // スキルツリータブ
-            let skill_tab = $('<li>').append($('<a>').attr({'href': `#${skilltree_id_header}${tree}`}).text(tree_name));
+            let skill_tab = $('<li>').append($('<a>').attr({'href': `#${skilltree_id_header}${tree}`}).text(`${tree_name}`)
+                .append($('<span>').text(' ('))
+                .append($('<span>').attr({'id': `tree${tree}_count`}).text('0'))
+                .append($('<span>').text(')')));
             // スキルツリー内容
             let div_tree = ($('<div>').attr({'id': `${skilltree_id_header}${tree}`, 'class': 'tab_contents'}));
             if(i == 0){
@@ -327,12 +330,30 @@ function AddChangeSkillColorEvent(){
 // スキルTierのポイントの色を変えるイベントを追加
 function AddChangeColorTierCountEvent(){
     $(document).on('DOMSubtreeModified propertychange', '[id$=count_header]', function () {
+        // スキルTierのポイントの色制御
         let limit_header = $(`#${$(this).attr('id').replace(header_count, header_limit)}`);
         if(Number($(this).text()) >= Number(limit_header.text()))
             $(this).addClass('allow_next_tier');
         else
             $(this).removeClass('allow_next_tier');
+
+        // ツリータイトルのスキルポイントの更新
+        UpdateTreeSkillPoint($(this));
     });
+}
+
+// ツリータイトルのスキルポイントの更新
+function UpdateTreeSkillPoint(tag){
+    // 書き換え操作の際に一度内容を空にしてから代入するため、値が入ってくるまでは処理を行わない
+    if(tag.text() == '')
+        return;
+
+    let tree_key = tag.attr('id').match(/[A-Z]/)[0];
+    let skilltiers = $(`#skilltree${tree_key} > span[id$=count_header]`);
+    let total = 0;
+    for(let i = 0; i < skilltiers.length; i++)
+        total += Number(skilltiers[i].innerText);
+    $(`#tree${tree_key}_count`).text(total);
 }
 
 // 残りスキルポイントの色を変えるイベントを追加
