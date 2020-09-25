@@ -2,7 +2,8 @@
     background-color: lightblue;
 }
 #detail {
-    background-color: lightgreen;
+    background-color: rgb(245, 255, 218);
+;
 }
 
 @media (min-width: 850px) {
@@ -14,7 +15,7 @@
     }
     #detail {
         flex-grow: 1;
-        width: 30%;
+        width: 100%;
         margin: 45px 10px 0px 10px;
     }
 }
@@ -23,6 +24,7 @@
     display: flex;
     justify-content: center;
     position: relative;
+    margin: 10px 0px 20px 0px;
 }
 .title_header{
     font-size: 40px;
@@ -111,4 +113,10 @@
 }
 .tab_contents.current {
     display: block;
+}
+.page_footer{
+    margin: 10px 0px 0px 0px;
+    padding: 1rem 1.5rem 1rem;
+    text-align: center;
+    background: #fdfdfd;
 }
