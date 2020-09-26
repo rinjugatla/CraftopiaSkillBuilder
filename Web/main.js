@@ -390,5 +390,11 @@ $(window).on('load', function () {
     $('#point_left').text(max_skill_point);
 
     // URLパラメータからスキル割り当て状況を復元
-    ImportSkillAssigmentString();
+    for(let i = 0; i < 5; i++){
+        // Edge等でDOM追加と復元が前後するためタイマーで処理
+        setTimeout(function(){
+            if((typeof skill_assigment['A']) !== 'undefined'){
+                ImportSkillAssigmentString();
+            }}, 500
+    )}
 });
