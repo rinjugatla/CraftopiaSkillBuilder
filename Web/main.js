@@ -1,7 +1,7 @@
 const allow_skilltree_version = ['v1']; // 許可するスキルツリーバージョン
 const latest_skilltree_version = allow_skilltree_version.slice(-1)[0]; // 最新のスキルツリーバージョン
 const max_skill_point = 49; // 最大スキルポイント
-const skill_column_count = 10; // 横に並べるスキルの数
+const skill_column_count = 8; // 横に並べるスキルの数
 const skilltree_id_header = 'skilltree';
 const header_count = 'count_header';
 const header_limit = 'limit_header';
