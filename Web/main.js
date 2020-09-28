@@ -112,11 +112,8 @@ function UpdateURL(){
     history.replaceState(null, null, url);
 }
 
-$(function () {
-    ImportArgs();
-    SetLanguage();
-
-    // タグ作成
+// スキルツリータグを作成
+function CreateSkilltreeDOM(){
     let json_filepath = GetSkilltreeFilepath();
     $.getJSON(json_filepath, function (data) {
         json = data;
@@ -201,11 +198,7 @@ $(function () {
             $('#skilltrees').append(div_tree);
         }
     });
-    
-    // 各種イベントを追加
-    AddDOMEvent();
-    
-});
+}
 
 // イベント追加
 function AddDOMEvent(){
@@ -385,6 +378,15 @@ function AddChangeLanguageEvent(){
     });
 }
 
+// ready
+$(function () {
+    ImportArgs();
+    SetLanguage();
+    CreateSkilltreeDOM();
+    AddDOMEvent();
+});
+
+// onload
 $(window).on('load', function () {
     // 値設定
     $('#point_left').text(max_skill_point);
