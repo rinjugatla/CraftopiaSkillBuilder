@@ -182,9 +182,9 @@ function CreateSkilltreeDOM(){
                         table.append(table_tr_icon);
                         table.append(table_tr_level);
                         // 次行分を初期化
-                        table_tr_name = ($('<tr>').attr({ 'class': 'name' }));
-                        table_tr_icon = ($('<tr>').attr({ 'class': 'icon' }));
-                        table_tr_level = ($('<tr>').attr({ 'class': 'level' }));
+                        table_tr_name = ($('<tr>').attr({ 'class': 'skill_name' }));
+                        table_tr_icon = ($('<tr>').attr({ 'class': 'skill_icon' }));
+                        table_tr_level = ($('<tr>').attr({ 'class': 'skill_level' }));
                     }
                 }
                 table.append(table_tr_name);
